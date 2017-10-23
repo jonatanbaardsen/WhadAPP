@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "274704031931",
+    "firebase_url": "https://whadapp-743a9.firebaseio.com",
+    "project_id": "whadapp-743a9",
+    "storage_bucket": "whadapp-743a9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:274704031931:android:51c3057530e19691",
+        "android_client_info": {
+          "package_name": "com.example.windows10.whadapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "274704031931-p7hp50m8449k3lhn645ihmshdt296o6e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.windows10.whadapp",
+            "certificate_hash": "11c1aeab40bcd474df3fa1ff8ab617f0bb6ddc66"
+          }
+        },
+        {
+          "client_id": "274704031931-bbu67p2bq17u7l275tcmea2olvd56aa2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrZcqAqRiUrD1PAsGLU_D8PwmJXYGDveQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "274704031931-bbu67p2bq17u7l275tcmea2olvd56aa2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
