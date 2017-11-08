@@ -1,7 +1,10 @@
 package model;
 
+import android.support.annotation.NonNull;
+
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -41,6 +44,29 @@ public class Message
                     this.chatId = entry.getValue();
                 }
             }
+    }
+
+    public Message(String messageId,String to,String from,Map<String,String> data)
+    {
+        this.messageId = messageId;
+        this.timeSent = System.currentTimeMillis();
+        this.toId = to;
+        this.title = title;
+
+        this.data = data;
+
+        this.fromId = from;
+        this.notification = null;
+        this.messageType = null;
+        this.collapseKey = null;
+
+        for (Map.Entry<String, String> entry : data.entrySet())
+        {
+            if(entry.getKey().equals("chatId"))
+            {
+                this.chatId = entry.getValue();
+            }
+        }
     }
 
     public String getMessageId()

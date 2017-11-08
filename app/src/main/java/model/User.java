@@ -20,12 +20,9 @@ import java.util.List;
 
 public class User
 {
-
     private String uniqueID;
     private String fullName;
     private String email;
-
-
     private String fcmToken;
     private Uri photoUrl;
     private boolean verified;
@@ -35,6 +32,44 @@ public class User
     private ArrayList<ContactRequest> receivedContactRequests = new ArrayList<ContactRequest>();
 
     private ArrayList<Contact> contacts = new ArrayList<Contact>();
+
+
+    public User(FirebaseUser user)
+    {
+        if(user == null)
+            return;
+
+        uniqueID = user.getUid();
+        fullName = user.getDisplayName();
+        email = user.getEmail();
+
+        verified = user.isEmailVerified();
+    }
+
+    public ArrayList<Contact> getContacts()
+    {
+        return contacts;
+    }
+
+    public ArrayList<ContactRequest> getSentContactRequests()
+    {
+        return sentContactRequests;
+    }
+
+    public ArrayList<ContactRequest> getReceivedContactRequests()
+    {
+        return receivedContactRequests;
+    }
+
+    public String getFcmToken()
+    {
+        return fcmToken;
+    }
+
+    public void setFcmToken(String fcmToken)
+    {
+        this.fcmToken = fcmToken;
+    }
 
     public String getUniqueID()
     {
@@ -139,40 +174,6 @@ public class User
     public void setContacts(ArrayList<Contact> contacts)
     {
         this.contacts = contacts;
-    }
-
-    public User(FirebaseUser user)
-    {
-        uniqueID = user.getUid();
-        fullName = user.getDisplayName();
-        email = user.getEmail();
-
-        verified = user.isEmailVerified();
-    }
-
-    public ArrayList<Contact> getContacts()
-    {
-        return contacts;
-    }
-
-    public ArrayList<ContactRequest> getSentContactRequests()
-    {
-        return sentContactRequests;
-    }
-
-    public ArrayList<ContactRequest> getReceivedContactRequests()
-    {
-        return receivedContactRequests;
-    }
-
-    public String getFcmToken()
-    {
-        return fcmToken;
-    }
-
-    public void setFcmToken(String fcmToken)
-    {
-        this.fcmToken = fcmToken;
     }
 
 }

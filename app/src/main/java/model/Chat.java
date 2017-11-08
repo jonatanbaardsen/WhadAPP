@@ -20,9 +20,12 @@ public class Chat
 
     public Chat(FirebaseUser createdBy, long timeCreated)
     {
+
         this.createdBy = createdBy;
         this.timeCreated = timeCreated;
         participants = new ArrayList<FirebaseUser>();
+
+        if(createdBy != null)
         participants.add(createdBy);
     }
 
