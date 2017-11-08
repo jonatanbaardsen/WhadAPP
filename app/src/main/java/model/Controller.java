@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
@@ -14,12 +15,26 @@ import java.util.ArrayList;
 
 public class Controller extends Application
 {
+    private String firebaseFcmToken;
+    private FirebaseUser userLoggedIn;
+
+    public String getFirebaseFcmToken()
+    {
+        return firebaseFcmToken;
+    }
+
+    public void setFirebaseFcmToken(String firebaseFcmToken)
+    {
+        this.firebaseFcmToken = firebaseFcmToken;
+    }
+
+
 
     public Controller()
     {
 
     }
-
+/*
     public ArrayList<Integer> GetChatIdentifiers(String userToken)
     {
         return GetChatIdentifiers(0,userToken);
@@ -59,5 +74,5 @@ public class Controller extends Application
         // TODO: 10/11/2017 Get Contact
         return null;
     }
-
+*/
 }

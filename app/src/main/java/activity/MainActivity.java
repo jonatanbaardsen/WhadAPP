@@ -33,7 +33,7 @@ Spinner spinnerMenuMain;
         toolbarMain.setTitle("My chats");
 
         spinnerMenuMain = (Spinner) findViewById(R.id.spinner_mainMenu);
-        setSupportActionBar(toolbarMain);
+        //setSupportActionBar(toolbarMain);
     }
 
     @Override

@@ -1,9 +1,11 @@
 package activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -17,7 +19,7 @@ import model.Controller;
 public abstract class BaseActivity extends AppCompatActivity
 {
 
-
+    private Class currentActivityClass;
     //The Firebase Authenticator instance
     private FirebaseAuth mAuth;
     //A listener for the Authenticator
@@ -27,7 +29,6 @@ public abstract class BaseActivity extends AppCompatActivity
     private boolean loggedIn = false;
 
     //Gets the controller for all activities
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
@@ -64,6 +65,7 @@ public abstract class BaseActivity extends AppCompatActivity
     protected void onStart()
     {
         super.onStart();
+        if(mAuth != null)
         mAuth.addAuthStateListener(mAuthListener);
         Controller controller = (Controller) getApplicationContext();
     }
@@ -78,10 +80,17 @@ public abstract class BaseActivity extends AppCompatActivity
         }
     }
 
+
+
     /*
     Updates user details in the activity
      */
     public abstract void updateUserDetails();
 
+
+    public boolean userIsLoggedIn()
+    {
+        return loggedIn;
+    }
 
 }

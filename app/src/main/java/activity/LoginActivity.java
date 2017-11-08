@@ -1,6 +1,8 @@
 package activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,7 +25,17 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_login);
+
+        if(userIsLoggedIn())
+        {
+            Intent intent = new Intent(this,MainActivity.class);
+            finish();
+            startActivity(intent);
+        }
+
     }
+
+
 
     @Override
     protected void onStart()
@@ -37,6 +49,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
         textViewPassword = (EditText) findViewById(R.id.text_password);
 
         buttonLogin.setOnClickListener(this);
+        buttonRegister.setOnClickListener(this);
+
+
+
+
     }
 
     /*
@@ -57,13 +74,22 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
     @Override
     public void onClick(View view)
     {
+        String email = textViewEmail.getText().toString().trim();
+        String password = textViewPassword.getText().toString().trim();
+
+        if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password))
+            System.out.println("Login---------------------");
+
         if (view.equals(buttonLogin))
         {
             System.out.println("Login---------------------");
 
+
         }
-        if (view.equals(buttonRegister))
+        if (!view.equals(buttonRegister))
         {
+
+
             System.out.println("Register-------");
         }
 

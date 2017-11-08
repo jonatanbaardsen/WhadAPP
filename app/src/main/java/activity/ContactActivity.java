@@ -6,6 +6,7 @@ import com.example.windows10.app.R;
 
 public class ContactActivity extends BaseActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

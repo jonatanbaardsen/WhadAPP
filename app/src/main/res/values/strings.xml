@@ -26,4 +26,6 @@
     <string name="email">Email</string>
     <string name="name">Name</string>
     <string name="profile_picture">Profile picture</string>
+    <string name="delete_account">Delete account</string>
+    <string name="freeze_account">Freeze account</string>
 </resources>
