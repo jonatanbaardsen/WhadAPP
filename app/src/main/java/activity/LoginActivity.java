@@ -94,4 +94,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
         }
 
     }
+
+    public class AsyncTask extends android.os.AsyncTask
+    {
+
+        @Override
+        protected Object doInBackground(Object[] objects)
+        {
+            TestData testData = new TestData();
+            return null;
+        }
+    }
+
 }

@@ -59,7 +59,7 @@ public class Message
         this.notification = null;
         this.messageType = null;
         this.collapseKey = null;
-
+/*
         for (Map.Entry<String, String> entry : data.entrySet())
         {
             if(entry.getKey().equals("chatId"))
@@ -67,6 +67,9 @@ public class Message
                 this.chatId = entry.getValue();
             }
         }
+      */
+chatId = "hello2";
+
     }
 
     public String getMessageId()

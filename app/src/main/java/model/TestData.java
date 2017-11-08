@@ -27,7 +27,7 @@ public class TestData
     public Contact contact2;
     public String newToken;
     private Date today = new Date(System.currentTimeMillis());
-    private static final Map<String, String> myMap = createMap();
+    private static Map<String, String> myMap = createMap();
 
     private static Map<String, String> createMap()
     {
@@ -39,6 +39,7 @@ public class TestData
 
     public TestData()
     {
+        newToken = "jghfds";
         user1 = new User(null);
         user1.setUniqueID("1");
         user1.setFullName("Akhmed");
@@ -63,7 +64,7 @@ public class TestData
     {
         db.addUserToDb(user1);
         db.addUserToDb(user2);
-        db.addContactToDb(user1.getUniqueID(),contact);
+       db.addContactToDb(user1.getUniqueID(),contact);
         db.addContactToDb(user2.getUniqueID(),contact2);
         db.addChatToDb(user1.getUniqueID(),chat);
         db.addChatToDb(user2.getUniqueID(),chat);
@@ -72,10 +73,6 @@ public class TestData
         db.addChatMessageToDb(user2.getUniqueID(),message3);
         db.addContactRequest(user1.getUniqueID(),contactRequest);
         db.addContactRequest(user2.getUniqueID(),contactRequest2);
-    }
-
-    public void getData()
-    {
 
     }
 
