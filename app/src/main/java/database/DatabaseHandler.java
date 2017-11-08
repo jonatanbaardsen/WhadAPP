@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -13,6 +14,7 @@ import com.google.firebase.database.Query;
 
 import model.Chat;
 import model.Contact;
+import model.ContactRequest;
 import model.Message;
 import model.User;
 
@@ -30,11 +32,11 @@ public class DatabaseHandler
         {
             if (databaseError != null)
             {
-                Log.d("db","Data could not be saved: " + databaseError.getMessage());
+                Log.d("db", "Data could not be saved: " + databaseError.getMessage());
             }
             else
             {
-                Log.d("db","Data saved successfully.");
+                Log.d("db", "Data saved successfully.");
             }
         }
     };
@@ -49,9 +51,19 @@ public class DatabaseHandler
         return database.getReference("server/saving-data/whadapp/" + child);
     }
 
+    private Query getSentContactRequestJsonList(String userId)
+    {
+        return null;//getDatabaseReference("contactRequest").getKey("")
+    }
+
+    private Query getRecievedContactRequestJsonList(String userId)
+    {
+        return null;
+    }
+
     private Query getChatJsonList(String userId, int numberOfChats)
     {
-        return getDatabaseReference(userId).child("chat").limitToFirst(numberOfChats);
+        return getDatabaseReference("chat").limitToFirst(numberOfChats);
     }
 
     private Query getContactJsonList(String userId, int numberOfContacts)
@@ -66,7 +78,11 @@ public class DatabaseHandler
 
     private Query getChatMessagesJsonList(String userId, String chatId, int numberOfMessages)
     {
-        return getDatabaseReference(userId).child(chatId).limitToLast(numberOfMessages);
+
+        getDatabaseReference(userId).child(chatId + "/messages").limitToLast(numberOfMessages);
+
+        return null;
+
     }
 
     private Query getChatMessageJson(String userId, String chatId, String messageId)
@@ -75,21 +91,44 @@ public class DatabaseHandler
     }
 
 
-    public void addChatToDb(String userId,Chat chat)
+    public void addChatToDb(String userId, Chat chat)
     {
-        getDatabaseReference(userId + "/chat/" + chat.getChatId()).setValue(chat, completeListener);
+
+        getDatabaseReference("chat/" + chat.getChatId()).setValue(chat, completeListener);
+/*
+        for (FirebaseUser user : chat.getParticipants())
+        {
+            getDatabaseReference("user").equalTo(user.getUid());
+        }
+        */
+        getDatabaseReference(userId).setValue(chat.getChatId(), completeListener);
     }
 
-    public void addMessageToDb(String userId,Message message)
+    public void addChatMessageToDb(String userId, Message message)
     {
-        getDatabaseReference(userId).child( "chat/" + message.getChatId()).push().setValue(message, completeListener);
+        getDatabaseReference("message/" + message.getChatId()).push().setValue(message, completeListener);
+        getDatabaseReference("chat/" + message.getChatId() + "/messages").push().setValue(message.getMessageId(), completeListener);
+        getDatabaseReference(userId).child("chat/" + message.getChatId()).push().setValue(message.getMessageId(), completeListener);
     }
 
 
-    public void addContactToDb(String userId,Contact contact)
+    public void addContactToDb(String userId, Contact contact)
     {
-       getDatabaseReference(userId).child(contact.getUser().getUniqueID()).setValue(contact,completeListener);
+        String uniqueId = determineContactId(userId, contact.getUser().getUniqueID());
+        getDatabaseReference("contact/" + uniqueId).setValue(contact, completeListener);
+        getDatabaseReference(userId).child("contacts").push().setValue(contact.getUser().getUniqueID(), completeListener);
     }
+
+    private String determineContactId(String userId, String uniqueID)
+    {
+        return userId.concat(uniqueID);
+    }
+
+    public void addContactRequest(String userId, ContactRequest request)
+    {
+        getDatabaseReference("contactRequest").push().setValue(request, completeListener);
+    }
+
 
     public void addUserToDb(User user)
     {
@@ -97,9 +136,9 @@ public class DatabaseHandler
                 completeListener);
     }
 
-    public void updateUserToken(String userId,String refreshedToken)
+    public void updateUserToken(String userId, String refreshedToken)
     {
-        getDatabaseReference(userId).child("fcmToken").setValue(refreshedToken,completeListener);
+        getDatabaseReference(userId).child("fcmToken").setValue(refreshedToken, completeListener);
 
     }
 

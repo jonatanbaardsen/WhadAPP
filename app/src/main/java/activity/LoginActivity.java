@@ -1,6 +1,7 @@
 package activity;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.example.windows10.app.R;
+
+import model.TestData;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener
 {
@@ -79,10 +82,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
 
         if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password))
             System.out.println("Login---------------------");
+AsyncTask task = new AsyncTask();
+task.doInBackground(new Object[2]);
 
         if (view.equals(buttonLogin))
         {
             System.out.println("Login---------------------");
+
 
 
         }
@@ -94,4 +100,18 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
         }
 
     }
+
+    public class AsyncTask extends android.os.AsyncTask
+    {
+
+        @Override
+        protected Object doInBackground(Object[] objects)
+        {
+            TestData testData = new TestData();
+            testData.saveData();
+            return null;
+        }
+    }
+
 }
+
