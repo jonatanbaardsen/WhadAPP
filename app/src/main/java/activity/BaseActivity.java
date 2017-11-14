@@ -19,17 +19,43 @@ import model.Controller;
 public abstract class BaseActivity extends AppCompatActivity
 {
 
+    private Class currentActivityClass;
+    //The Firebase Authenticator instance
+    private FirebaseAuth mAuth;
+    //A listener for the Authenticator
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    //The Firebase User
+    private FirebaseUser userLoggedIn = null;
+    private boolean loggedIn = false;
 
-    private Controller controller;
+    //Gets the controller for all activities
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-controller = (Controller) getApplication();
+
         //Gets instance of the Firebase Authenticator
-//if(controller.user)
+        mAuth = FirebaseAuth.getInstance();
 
-
+        //Creates a listener for a login-attempt
+        mAuthListener = new FirebaseAuth.AuthStateListener()
+        {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth)
+            {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null)
+                {
+                    userLoggedIn = user;
+                    loggedIn = true;
+                }
+                else
+                {
+                    loggedIn = false;
+                }
+            }
+        };
     }
 
 
@@ -39,7 +65,6 @@ controller = (Controller) getApplication();
     protected void onStart()
     {
         super.onStart();
-
         if(mAuth != null)
         mAuth.addAuthStateListener(mAuthListener);
         Controller controller = (Controller) getApplicationContext();
@@ -68,14 +93,4 @@ controller = (Controller) getApplication();
         return loggedIn;
     }
 
-
-    public FirebaseUser getUserLoggedIn()
-    {
-        return userLoggedIn;
-    }
-
-    public void setUserLoggedIn(FirebaseUser userLoggedIn)
-    {
-        this.userLoggedIn = userLoggedIn;
-    }
 }
