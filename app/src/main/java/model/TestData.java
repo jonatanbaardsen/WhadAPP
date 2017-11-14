@@ -1,5 +1,9 @@
 package model;
 
+import android.app.DownloadManager;
+
+import com.google.firebase.database.Query;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,11 +55,11 @@ public class TestData
         chat = new Chat(null, System.currentTimeMillis());
         chat.setChatId("hello2");
 
-        contactRequest = new ContactRequest(user1, user2, today);
-        contactRequest2 = new ContactRequest(user2,user1,today);
+        contactRequest = new ContactRequest(user1.getUniqueID(), user2.getUniqueID(), today);
+        contactRequest2 = new ContactRequest(user2.getUniqueID(), user1.getUniqueID(), today);
         message1 = new Message("1", user1.getUniqueID(), user2.getUniqueID(), myMap);
         message2 = new Message("2", user1.getUniqueID(), user2.getUniqueID(), myMap);
-        message3 = new Message("3",user2.getUniqueID(),user1.getUniqueID(),myMap);
+        message3 = new Message("3", user2.getUniqueID(), user1.getUniqueID(), myMap);
         contact = new Contact(user2);
         contact2 = new Contact(user1);
     }
@@ -64,17 +68,30 @@ public class TestData
     {
         db.addUserToDb(user1);
         db.addUserToDb(user2);
-       db.addContactToDb(user1.getUniqueID(),contact);
-        db.addContactToDb(user2.getUniqueID(),contact2);
-        db.addChatToDb(user1.getUniqueID(),chat);
-        db.addChatToDb(user2.getUniqueID(),chat);
-        db.addChatMessageToDb(user1.getUniqueID(),message1);
-        db.addChatMessageToDb(user1.getUniqueID(),message2);
-        db.addChatMessageToDb(user2.getUniqueID(),message3);
-        db.addContactRequest(user1.getUniqueID(),contactRequest);
-        db.addContactRequest(user2.getUniqueID(),contactRequest2);
+        db.addContactToDb(user1.getUniqueID(), contact);
+        db.addContactToDb(user2.getUniqueID(), contact2);
+        db.addContactToDb(user2.getUniqueID(), contact);
+        db.addChatToDb(user1.getUniqueID(), chat);
+        db.addChatToDb(user2.getUniqueID(), chat);
+        db.addChatMessageToDb(user1.getUniqueID(), message1);
+        db.addChatMessageToDb(user1.getUniqueID(), message2);
+        db.addChatMessageToDb(user2.getUniqueID(), message3);
+        // db.addContactRequest(user1.getUniqueID(),contactRequest);
+        //db.addContactRequest(user2.getUniqueID(),contactRequest2);
 
     }
 
+    public void getData()
+    {
+        print(db.getChatJsonList("1", 2));
+        print(db.getChatMessageJson("1", chat.getChatId(), "1"));
+        print(db.getChatMessagesJsonList("1",chat.getChatId(),1));
+    }
+
+    public void print(Query query)
+    {
+
+        System.out.println(query.toString());
+    }
 
 }

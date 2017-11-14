@@ -1,18 +1,16 @@
 package database;
 
-import android.nfc.Tag;
-import android.os.AsyncTask;
 import android.util.Log;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
+import com.google.firebase.database.*;
 
 import model.Chat;
 import model.Contact;
+import model.ContactRequest;
+import model.Controller;
 import model.Message;
 import model.User;
 
@@ -23,6 +21,7 @@ import model.User;
 public class DatabaseHandler
 {
     final private FirebaseDatabase database = FirebaseDatabase.getInstance();
+
     private DatabaseReference.CompletionListener completeListener = new DatabaseReference.CompletionListener()
     {
         @Override
@@ -39,6 +38,20 @@ public class DatabaseHandler
         }
     };
 
+    private ValueEventListener getIdentifikatorsValueEventListeners = new ValueEventListener(){
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot)
+        {
+
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError)
+        {
+
+        }
+    };
+
     private DatabaseReference getDatabaseReference()
     {
         return database.getReference("server/saving-data/whadapp");
@@ -49,51 +62,64 @@ public class DatabaseHandler
         return database.getReference("server/saving-data/whadapp/" + child);
     }
 
-    private Query getChatJsonList(String userId, int numberOfChats)
+    public Query getChatJsonList(String userId, int numberOfChats)
     {
         return getDatabaseReference(userId).child("chat").limitToFirst(numberOfChats);
     }
 
-    private Query getContactJsonList(String userId, int numberOfContacts)
+    public Query getContactJsonList(String userId, int numberOfContacts)
     {
         return getDatabaseReference(userId).child("contact").limitToFirst(numberOfContacts);
     }
 
-    private Query getUserJsonList(int numberOfUsers)
+    public Query getUserJsonList(int numberOfUsers)
     {
         return getDatabaseReference().child("user").limitToFirst(numberOfUsers);
     }
 
-    private Query getChatMessagesJsonList(String userId, String chatId, int numberOfMessages)
+    public Query getChatMessagesJsonList(String userId, String chatId, int numberOfMessages)
     {
-        return getDatabaseReference(userId).child(chatId).limitToLast(numberOfMessages);
+        return getDatabaseReference(userId).child(chatId + "/messages").limitToLast(numberOfMessages);
     }
 
-    private Query getChatMessageJson(String userId, String chatId, String messageId)
+    public Query getChatMessageJson(String userId, String chatId, String messageId)
     {
-        return getDatabaseReference(userId).child(chatId + "/messages").child("messageId").equalTo(messageId);
+        return getDatabaseReference(userId).child(chatId + "/messages").child("messageId").equalTo(messageId).orderByKey();
     }
 
+   /* public Query getContactRequestJsonList(String userId,boolean getIncomingRequests)
+    {
+    return getDatabaseReference("contactRequest");
+    }
+
+    public Query getContactRequestJsonList(String userId)
+    {
+     return getContactRequestJsonList(userId,false);
+    }
+*/
 
     public void addChatToDb(String userId,Chat chat)
     {
-        getDatabaseReference(userId + "/chat/" + chat.getChatId()).setValue(chat, completeListener);
+        getDatabaseReference("chat/" + chat.getChatId()).setValue(chat, completeListener);
+        getDatabaseReference(userId).child("chat").push().setValue(chat.getChatId(),completeListener);
     }
 
-    public void addMessageToDb(String userId,Message message)
+    public void addChatMessageToDb(String userId, Message message)
     {
-        getDatabaseReference(userId).child( "chat/" + message.getChatId()).push().setValue(message, completeListener);
+        getDatabaseReference(userId).child( "chat/" + message.getChatId() + "/messages").push().setValue(message, completeListener);
     }
 
 
     public void addContactToDb(String userId,Contact contact)
     {
-       getDatabaseReference(userId).child(contact.getUser().getUniqueID()).setValue(contact,completeListener);
+       getDatabaseReference("contacts/" + contact.getUser().getUniqueID()).setValue(contact,completeListener);
+       getDatabaseReference(userId).child("contacts/").push().setValue(contact.getUser().getUniqueID(),completeListener);
+
     }
 
     public void addUserToDb(User user)
     {
-        getDatabaseReference().child("User/" + user.getUniqueID()).setValue(user,
+        getDatabaseReference().child("user/" + user.getUniqueID()).setValue(user,
                 completeListener);
     }
 
@@ -103,6 +129,10 @@ public class DatabaseHandler
 
     }
 
-    // TODO: 10/24/2017 Test and complete logic 
+    public void addContactRequest(String uniqueID, ContactRequest contactRequest)
+    {
+        getDatabaseReference("contactRequest").push().setValue(contactRequest,completeListener);
+    }
 
+    // TODO: 10/24/2017 Test and complete logic
 }

@@ -8,8 +8,8 @@ import java.util.Date;
 
 public class ContactRequest
 {
-    private User sentFrom;
-    private User sentTo;
+    private String sentFrom;
+    private String sentTo;
     private Date dateSent;
     private Date dateAnswered;
     private Boolean accepted;
@@ -20,22 +20,22 @@ public class ContactRequest
         this(null,null,null,null,false);
     }
 
-    public ContactRequest(User sentFrom, User sentTo)
+    public ContactRequest(String sentFrom, String sentTo)
     {
         this(sentFrom, sentTo, null, null, false);
     }
 
-    public ContactRequest(User sentFrom, User sentTo, Date dateSent)
+    public ContactRequest(String sentFrom, String sentTo, Date dateSent)
     {
         this(sentFrom, sentTo, dateSent, null, false);
     }
 
-    public ContactRequest(User sentFrom, User sentTo, Date dateSent, Date dateAnswered)
+    public ContactRequest(String sentFrom, String sentTo, Date dateSent, Date dateAnswered)
     {
         this(sentFrom, sentTo, dateSent, dateAnswered, false);
     }
 
-    public ContactRequest(User sentFrom, User sentTo, Date dateSent, Date dateAnswered, Boolean accepted)
+    public ContactRequest(String sentFrom, String sentTo, Date dateSent, Date dateAnswered, Boolean accepted)
     {
         this.sentFrom = sentFrom;
         this.sentTo = sentTo;
@@ -44,22 +44,22 @@ public class ContactRequest
         this.accepted = accepted;
     }
 
-    public User getSentFrom()
+    public String getSentFrom()
     {
         return sentFrom;
     }
 
-    public void setSentFrom(User sentFrom)
+    public void setSentFrom(String sentFrom)
     {
         this.sentFrom = sentFrom;
     }
 
-    public User getSentTo()
+    public String getSentTo()
     {
         return sentTo;
     }
 
-    public void setSentTo(User sentTo)
+    public void setSentTo(String sentTo)
     {
         this.sentTo = sentTo;
     }

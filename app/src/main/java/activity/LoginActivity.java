@@ -10,6 +10,8 @@ import android.widget.ImageView;
 
 import com.example.windows10.app.R;
 
+import model.TestData;
+
 public class LoginActivity extends BaseActivity implements View.OnClickListener
 {
 
@@ -93,6 +95,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
             System.out.println("Register-------");
         }
 
+        AsyncTask task = new AsyncTask();
+        task.doInBackground(new Object[2]);
+
     }
 
     public class AsyncTask extends android.os.AsyncTask
@@ -102,6 +107,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
         protected Object doInBackground(Object[] objects)
         {
             TestData testData = new TestData();
+//testData.saveData();
+            testData.getData();
             return null;
         }
     }
