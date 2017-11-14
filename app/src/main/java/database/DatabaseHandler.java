@@ -38,20 +38,6 @@ public class DatabaseHandler
         }
     };
 
-    private ValueEventListener getIdentifikatorsValueEventListeners = new ValueEventListener(){
-        @Override
-        public void onDataChange(DataSnapshot dataSnapshot)
-        {
-
-        }
-
-        @Override
-        public void onCancelled(DatabaseError databaseError)
-        {
-
-        }
-    };
-
     private DatabaseReference getDatabaseReference()
     {
         return database.getReference("server/saving-data/whadapp");
@@ -62,27 +48,27 @@ public class DatabaseHandler
         return database.getReference("server/saving-data/whadapp/" + child);
     }
 
-    public Query getChatJsonList(String userId, int numberOfChats)
+    public Query getChatsReference(String userId, int numberOfChats)
     {
         return getDatabaseReference(userId).child("chat").limitToFirst(numberOfChats);
     }
 
-    public Query getContactJsonList(String userId, int numberOfContacts)
+    public Query getContactsReference(String userId, int numberOfContacts)
     {
         return getDatabaseReference(userId).child("contact").limitToFirst(numberOfContacts);
     }
 
-    public Query getUserJsonList(int numberOfUsers)
+    public Query getUsersReference(int numberOfUsers)
     {
         return getDatabaseReference().child("user").limitToFirst(numberOfUsers);
     }
 
-    public Query getChatMessagesJsonList(String userId, String chatId, int numberOfMessages)
+    public Query getChatMessagesReference(String userId, String chatId, int numberOfMessages)
     {
         return getDatabaseReference(userId).child(chatId + "/messages").limitToLast(numberOfMessages);
     }
 
-    public Query getChatMessageJson(String userId, String chatId, String messageId)
+    public Query getChatMessageReference(String userId, String chatId, String messageId)
     {
         return getDatabaseReference(userId).child(chatId + "/messages").child("messageId").equalTo(messageId).orderByKey();
     }

@@ -1,13 +1,14 @@
 package model;
 
 import android.app.Application;
-import android.content.Context;
-import android.content.Intent;
+import android.support.annotation.NonNull;
 
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 
-import java.util.ArrayList;
+import database.DatabaseHandler;
 
 /**
  * Created by Windows10 on 10/11/2017.
@@ -15,25 +16,87 @@ import java.util.ArrayList;
 
 public class Controller extends Application
 {
-    private String firebaseFcmToken;
+    private final FirebaseAuth mAuth;
+    private final FirebaseAuth.AuthStateListener mAuthListener;
+    private String fcmToken;
     private FirebaseUser userLoggedIn;
+    private User currentUser = null;
 
-    public String getFirebaseFcmToken()
-    {
-        return firebaseFcmToken;
-    }
 
-    public void setFirebaseFcmToken(String firebaseFcmToken)
-    {
-        this.firebaseFcmToken = firebaseFcmToken;
-    }
+
+    private boolean loggedIn = false;
+    private DatabaseHandler db = new DatabaseHandler();
 
 
 
     public Controller()
     {
+        mAuth = FirebaseAuth.getInstance();
 
+        //Creates a listener for a login-attempt
+        mAuthListener = new FirebaseAuth.AuthStateListener()
+        {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth)
+            {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null)
+                {
+                    setUserLoggedIn(user);
+                    setLoggedIn(true);
+                }
+                else
+                {
+                    setLoggedIn(false);
+                }
+            }
+        };
+
+        /*TODO Get chats to test main page
+         */
     }
+
+    /*public Task<GetTokenResult> getFirebaseFcmToken()
+    {
+        return userLoggedIn.getToken();
+    }
+*/
+    public void setFirebaseFcmToken(String firebaseFcmToken)
+    {
+        this.fcmToken = firebaseFcmToken;
+    }
+    public FirebaseUser getUserLoggedIn()
+    {
+        return userLoggedIn;
+    }
+
+    public void setUserLoggedIn(FirebaseUser userLoggedIn)
+    {
+        this.userLoggedIn = userLoggedIn;
+    }
+
+    public User getCurrentUser()
+    {
+        return currentUser;
+    }
+
+    public void setCurrentUser(User currentUser)
+    {
+        this.currentUser = currentUser;
+    }
+
+    public boolean isLoggedIn()
+    {
+        return loggedIn;
+    }
+
+    public void setLoggedIn(boolean loggedIn)
+    {
+        this.loggedIn = loggedIn;
+    }
+
+
+
 /*
     public ArrayList<Integer> GetChatIdentifiers(String userToken)
     {
@@ -75,4 +138,6 @@ public class Controller extends Application
         return null;
     }
 */
+
+
 }

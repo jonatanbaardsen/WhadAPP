@@ -19,43 +19,17 @@ import model.Controller;
 public abstract class BaseActivity extends AppCompatActivity
 {
 
-    private Class currentActivityClass;
-    //The Firebase Authenticator instance
-    private FirebaseAuth mAuth;
-    //A listener for the Authenticator
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    //The Firebase User
-    private FirebaseUser userLoggedIn = null;
-    private boolean loggedIn = false;
 
-    //Gets the controller for all activities
-
+    private Controller controller;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
+controller = (Controller) getApplication();
         //Gets instance of the Firebase Authenticator
-        mAuth = FirebaseAuth.getInstance();
+//if(controller.user)
 
-        //Creates a listener for a login-attempt
-        mAuthListener = new FirebaseAuth.AuthStateListener()
-        {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth)
-            {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null)
-                {
-                    userLoggedIn = user;
-                    loggedIn = true;
-                }
-                else
-                {
-                    loggedIn = false;
-                }
-            }
-        };
+
     }
 
 
@@ -65,6 +39,7 @@ public abstract class BaseActivity extends AppCompatActivity
     protected void onStart()
     {
         super.onStart();
+
         if(mAuth != null)
         mAuth.addAuthStateListener(mAuthListener);
         Controller controller = (Controller) getApplicationContext();
@@ -93,4 +68,14 @@ public abstract class BaseActivity extends AppCompatActivity
         return loggedIn;
     }
 
+
+    public FirebaseUser getUserLoggedIn()
+    {
+        return userLoggedIn;
+    }
+
+    public void setUserLoggedIn(FirebaseUser userLoggedIn)
+    {
+        this.userLoggedIn = userLoggedIn;
+    }
 }

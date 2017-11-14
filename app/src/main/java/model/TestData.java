@@ -83,9 +83,9 @@ public class TestData
 
     public void getData()
     {
-        print(db.getChatJsonList("1", 2));
-        print(db.getChatMessageJson("1", chat.getChatId(), "1"));
-        print(db.getChatMessagesJsonList("1",chat.getChatId(),1));
+       // print(db.getChatJsonList("1", 2));
+        //print(db.getChatMessageJson("1", chat.getChatId(), "1"));
+        //print(db.getChatMessagesJsonList("1",chat.getChatId(),1));
     }
 
     public void print(Query query)

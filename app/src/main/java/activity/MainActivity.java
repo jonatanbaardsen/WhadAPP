@@ -11,6 +11,11 @@ import android.widget.Spinner;
 
 import com.example.windows10.app.R;
 
+import java.util.ArrayList;
+
+import adapter.ChatAdapter;
+import database.DatabaseHandler;
+
 public class MainActivity extends BaseActivity
 {
 Spinner spinnerMenuMain;
@@ -18,6 +23,8 @@ Spinner spinnerMenuMain;
     FloatingActionButton buttonNewChat;
     ImageView imageMainLogo;
     Toolbar toolbarMain;
+    DatabaseHandler db = new DatabaseHandler();
+    List<Chat> chats = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -31,6 +38,12 @@ Spinner spinnerMenuMain;
         imageMainLogo = (ImageView) findViewById(R.id.imageView_MainLogo);
         toolbarMain = (Toolbar) findViewById(R.id.toolbar_mainMenu);
         toolbarMain.setTitle("My chats");
+
+
+        //ChatAdapter adapter = new ChatAdapter(this,null);
+        //gridViewChatList.setAdapter(adapter);
+
+
 
         spinnerMenuMain = (Spinner) findViewById(R.id.spinner_mainMenu);
         //setSupportActionBar(toolbarMain);
