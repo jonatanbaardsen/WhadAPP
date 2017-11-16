@@ -11,6 +11,13 @@ import android.widget.Spinner;
 
 import com.example.windows10.app.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import adapter.ChatAdapter;
+import database.DatabaseHandler;
+import model.Chat;
+
 public class MainActivity extends BaseActivity
 {
 Spinner spinnerMenuMain;
@@ -18,6 +25,9 @@ Spinner spinnerMenuMain;
     FloatingActionButton buttonNewChat;
     ImageView imageMainLogo;
     Toolbar toolbarMain;
+    DatabaseHandler db = new DatabaseHandler();
+    List<Chat> chats = new ArrayList<Chat>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)

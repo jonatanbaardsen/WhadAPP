@@ -111,6 +111,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
             testData.getData();
             return null;
         }
-    }
+    }*/
 
 }

@@ -7,10 +7,12 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import model.Controller;
+import model.User;
 
 /**
  * Created by Windows10 on 10/12/2017.
@@ -59,8 +61,6 @@ public abstract class BaseActivity extends AppCompatActivity
     }
 
 
-
-
     @Override
     protected void onStart()
     {
@@ -81,14 +81,12 @@ public abstract class BaseActivity extends AppCompatActivity
     }
 
 
-
     /*
     Updates user details in the activity
      */
     public abstract void updateUserDetails();
 
-
-    public boolean userIsLoggedIn()
+    public boolean isLoggedIn()
     {
         return loggedIn;
     }
