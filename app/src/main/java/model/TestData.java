@@ -53,7 +53,7 @@ public class TestData
         user2.setFullName("Ali");
 
         chat = new Chat(null, System.currentTimeMillis());
-        chat.setChatId("hello2");
+       // chat.setChatId("hello2");
 
         contactRequest = new ContactRequest(user1.getUniqueID(), user2.getUniqueID(), today);
         contactRequest2 = new ContactRequest(user2.getUniqueID(), user1.getUniqueID(), today);
@@ -83,9 +83,9 @@ public class TestData
 
     public void getData()
     {
-        print(db.getChatJsonList("1", 2));
-        print(db.getChatMessageJson("1", chat.getChatId(), "1"));
-        print(db.getChatMessagesJsonList("1",chat.getChatId(),1));
+        //print(db.getChatJsonList("1", 2));
+        //print(db.getChatMessageJson("1", chat.getChatId(), "1"));
+        //print(db.getChatMessagesJsonList("1",chat.getChatId(),1));
     }
 
     public void print(Query query)

@@ -1,9 +1,6 @@
 package model;
 
-import com.google.firebase.auth.FirebaseUser;
-
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by Windows10 on 10/11/2017.
@@ -11,30 +8,30 @@ import java.util.Date;
 
 public class Chat
 {
-    private FirebaseUser createdBy;
-    private String chatId;
+    private User createdBy;
+    private String chatId = null;
     private Long timeCreated;
-    private ArrayList<FirebaseUser> participants;
+    private ArrayList<User> participants;
     private int countNewMessages;
 
 
-    public Chat(FirebaseUser createdBy, long timeCreated)
+    public Chat(User createdBy, long timeCreated)
     {
 
         this.createdBy = createdBy;
         this.timeCreated = timeCreated;
-        participants = new ArrayList<FirebaseUser>();
+        participants = new ArrayList<User>();
 
         if(createdBy != null)
         participants.add(createdBy);
     }
 
-    public FirebaseUser getCreatedBy()
+    public User getCreatedBy()
     {
         return createdBy;
     }
 
-    public void setCreatedBy(FirebaseUser createdBy)
+    public void setCreatedBy(User createdBy)
     {
         this.createdBy = createdBy;
     }
@@ -59,12 +56,12 @@ public class Chat
         this.timeCreated = timeCreated;
     }
 
-    public ArrayList<FirebaseUser> getParticipants()
+    public ArrayList<User> getParticipants()
     {
         return participants;
     }
 
-    public void setParticipants(ArrayList<FirebaseUser> participants)
+    public void setParticipants(ArrayList<User> participants)
     {
         this.participants = participants;
     }

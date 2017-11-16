@@ -28,4 +28,5 @@
     <string name="profile_picture">Profile picture</string>
     <string name="delete_account">Delete account</string>
     <string name="freeze_account">Freeze account</string>
+    <string name="standard_textview">TextView</string>
 </resources>

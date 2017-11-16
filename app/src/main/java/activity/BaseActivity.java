@@ -31,8 +31,11 @@ public abstract class BaseActivity extends AppCompatActivity
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     //The Firebase User
-    private FirebaseUser userLoggedIn = null;
+    private static FirebaseUser firebaseUserLoggedIn = null;
+
+    private static User applicationUser = null;
     private boolean loggedIn = false;
+
 
     //Gets the controller for all activities
 
@@ -53,7 +56,7 @@ public abstract class BaseActivity extends AppCompatActivity
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null)
                 {
-                    userLoggedIn = user;
+                    firebaseUserLoggedIn = user;
                     loggedIn = true;
                 }
                 else
@@ -100,13 +103,25 @@ public abstract class BaseActivity extends AppCompatActivity
         return mAuth;
     }
 
-    public FirebaseUser getUserLoggedIn()
+    public FirebaseUser getFirebaseUserLoggedIn()
     {
-        return userLoggedIn;
+        return firebaseUserLoggedIn;
     }
 
-    public void setUserLoggedIn(FirebaseUser userLoggedIn)
+    public void setFirebaseUserLoggedIn(FirebaseUser userLoggedIn)
     {
-        this.userLoggedIn = userLoggedIn;
+        this.firebaseUserLoggedIn = userLoggedIn;
     }
+
+    public User getApplicationUser()
+    {
+        return applicationUser;
+    }
+
+    public void setApplicationUser(User applicationUser)
+    {
+        this.applicationUser = applicationUser;
+    }
+
+
 }

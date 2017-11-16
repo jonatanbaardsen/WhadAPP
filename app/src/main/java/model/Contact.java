@@ -9,6 +9,9 @@ import java.util.Date;
 public class Contact
 {
 
+
+
+    private String uniqueId;
     private User user;
     private Date requestSent;
     private Date added;
@@ -82,5 +85,15 @@ public class Contact
     public void setRemoved(Date removed)
     {
         this.removed = removed;
+    }
+
+    public String getUniqueId()
+    {
+        return uniqueId;
+    }
+
+    public void setUniqueId(String uniqueId)
+    {
+        this.uniqueId = uniqueId;
     }
 }

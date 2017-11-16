@@ -15,9 +15,14 @@ import com.example.windows10.app.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
-import model.Login;
+import database.DatabaseHandler;
 import model.TestData;
+import model.User;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener
 {
@@ -28,7 +33,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
     ImageView imageLogoLogin;
     EditText textViewEmail;
     EditText textViewPassword;
-
+    DatabaseHandler db = new DatabaseHandler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -79,6 +84,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
     @Override
     public void onClick(View view)
     {
+
         String email = textViewEmail.getText().toString().trim();
         String password = textViewPassword.getText().toString().trim();
 
@@ -98,26 +104,37 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
             register(email, password);
         }
 
-        //  AsyncTask task = new AsyncTask();
-        //  task.doInBackground(new Object[2]);
+        //AsyncTask task = new AsyncTask();
+        //task.doInBackground(new Object[2]);
 
 
     }
 
+
     private void login(String email, String password)
     {
+
+
         getAuth().signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>()
+                {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
+                    public void onComplete(@NonNull Task<AuthResult> task)
+                    {
+                        if (task.isSuccessful())
+                        {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             Toast.makeText(LoginActivity.this, "Logged in.",
                                     Toast.LENGTH_SHORT).show();
-                            setUserLoggedIn(getAuth().getCurrentUser());
+                            setFirebaseUserLoggedIn(getAuth().getCurrentUser());
+                            User loggedInUser = new User(getFirebaseUserLoggedIn());
+                            addUserToDb(loggedInUser);
+                            setApplicationUser(loggedInUser);
                             moveToMainPage();
-                        } else {
+                        }
+                        else
+                        {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
@@ -127,17 +144,43 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
                 });
     }
 
+    private void addUserToDb(final User user)
+    {
+
+        db.getUserJson(user.getUniqueID()).addListenerForSingleValueEvent(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                if (!dataSnapshot.exists())
+                    db.addUserToDb(user);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError)
+            {
+                Log.d(TAG, "User not saved. Db internal error?");
+            }
+        });
+    }
+
+
     private void register(final String email, final String password)
     {
         getAuth().createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>()
+                {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
+                    public void onComplete(@NonNull Task<AuthResult> task)
+                    {
+                        if (task.isSuccessful())
+                        {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
-                            login(email,password);
-                        } else {
+                            login(email, password);
+                        }
+                        else
+                        {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
@@ -151,12 +194,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
 
     private void moveToMainPage()
     {
-        Intent intent = new Intent(this,MainActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         finish();
         startActivity(intent);
     }
 
-    /* public class AsyncTask extends android.os.AsyncTask
+
+    public class AsyncTask extends android.os.AsyncTask
     {
 
         @Override
@@ -164,9 +208,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
         {
             TestData testData = new TestData();
 //testData.saveData();
-            testData.getData();
+           // testData.getData();
             return null;
         }
     }
-*/
 }

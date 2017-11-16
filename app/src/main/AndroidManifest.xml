@@ -31,6 +31,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name="activity.ChatActivity">
+
+        </activity>
         <activity
             android:name="activity.ContactActivity"
             android:theme="@android:style/Theme.DeviceDefault.NoActionBar">
