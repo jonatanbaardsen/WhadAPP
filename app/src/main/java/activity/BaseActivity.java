@@ -22,10 +22,14 @@ public abstract class BaseActivity extends AppCompatActivity
 {
 
     private Class currentActivityClass;
+
+
+
     //The Firebase Authenticator instance
     private FirebaseAuth mAuth;
     //A listener for the Authenticator
     private FirebaseAuth.AuthStateListener mAuthListener;
+
     //The Firebase User
     private FirebaseUser userLoggedIn = null;
     private boolean loggedIn = false;
@@ -91,4 +95,18 @@ public abstract class BaseActivity extends AppCompatActivity
         return loggedIn;
     }
 
+    public FirebaseAuth getAuth()
+    {
+        return mAuth;
+    }
+
+    public FirebaseUser getUserLoggedIn()
+    {
+        return userLoggedIn;
+    }
+
+    public void setUserLoggedIn(FirebaseUser userLoggedIn)
+    {
+        this.userLoggedIn = userLoggedIn;
+    }
 }

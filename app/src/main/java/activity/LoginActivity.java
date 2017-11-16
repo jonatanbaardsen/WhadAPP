@@ -2,19 +2,27 @@ package activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.windows10.app.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 
+import model.Login;
 import model.TestData;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener
 {
 
+    private static final String TAG = "LoginActivity";
     Button buttonLogin;
     Button buttonRegister;
     ImageView imageLogoLogin;
@@ -27,16 +35,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_login);
-
+/*
         if(userIsLoggedIn())
         {
-            Intent intent = new Intent(this,MainActivity.class);
-            finish();
-            startActivity(intent);
+
         }
-
+*/
     }
-
 
 
     @Override
@@ -52,8 +57,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
 
         buttonLogin.setOnClickListener(this);
         buttonRegister.setOnClickListener(this);
-
-
 
 
     }
@@ -79,28 +82,81 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
         String email = textViewEmail.getText().toString().trim();
         String password = textViewPassword.getText().toString().trim();
 
-        if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password))
-            System.out.println("Login---------------------");
+        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password))
+        {
+            Toast.makeText(LoginActivity.this, "Both email and password must be entered",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         if (view.equals(buttonLogin))
         {
-            System.out.println("Login---------------------");
-
-
+            login(email, password);
         }
-        if (!view.equals(buttonRegister))
+        if (view.equals(buttonRegister))
         {
-
-
-            System.out.println("Register-------");
+            register(email, password);
         }
 
-        AsyncTask task = new AsyncTask();
-        task.doInBackground(new Object[2]);
+        //  AsyncTask task = new AsyncTask();
+        //  task.doInBackground(new Object[2]);
+
 
     }
 
-    public class AsyncTask extends android.os.AsyncTask
+    private void login(String email, String password)
+    {
+        getAuth().signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithEmail:success");
+                            Toast.makeText(LoginActivity.this, "Logged in.",
+                                    Toast.LENGTH_SHORT).show();
+                            setUserLoggedIn(getAuth().getCurrentUser());
+                            moveToMainPage();
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    private void register(final String email, final String password)
+    {
+        getAuth().createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "createUserWithEmail:success");
+                            login(email,password);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+
+                        // ...
+                    }
+                });
+    }
+
+    private void moveToMainPage()
+    {
+        Intent intent = new Intent(this,MainActivity.class);
+        finish();
+        startActivity(intent);
+    }
+
+    /* public class AsyncTask extends android.os.AsyncTask
     {
 
         @Override
@@ -111,6 +167,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
             testData.getData();
             return null;
         }
-    }*/
-
+    }
+*/
 }

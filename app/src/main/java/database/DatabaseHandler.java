@@ -38,20 +38,6 @@ public class DatabaseHandler
         }
     };
 
-    private ValueEventListener getIdentifikatorsValueEventListeners = new ValueEventListener(){
-        @Override
-        public void onDataChange(DataSnapshot dataSnapshot)
-        {
-
-        }
-
-        @Override
-        public void onCancelled(DatabaseError databaseError)
-        {
-
-        }
-    };
-
     private DatabaseReference getDatabaseReference()
     {
         return database.getReference("server/saving-data/whadapp");
@@ -62,12 +48,12 @@ public class DatabaseHandler
         return database.getReference("server/saving-data/whadapp/" + child);
     }
 
-    public Query getChatJsonList(String userId, int numberOfChats)
+    public Query getChatIdentifiersJsonList(String userId, int numberOfChats)
     {
         return getDatabaseReference(userId).child("chat").limitToFirst(numberOfChats);
     }
 
-    public Query getContactJsonList(String userId, int numberOfContacts)
+    public Query getContactIdentifiersJsonList(String userId, int numberOfContacts)
     {
         return getDatabaseReference(userId).child("contact").limitToFirst(numberOfContacts);
     }
@@ -82,21 +68,12 @@ public class DatabaseHandler
         return getDatabaseReference(userId).child(chatId + "/messages").limitToLast(numberOfMessages);
     }
 
-    public Query getChatMessageJson(String userId, String chatId, String messageId)
+
+   public Query getContactRequestsJsonList(String userId)
     {
-        return getDatabaseReference(userId).child(chatId + "/messages").child("messageId").equalTo(messageId).orderByKey();
+    return getDatabaseReference("contactRequest/");
     }
 
-   /* public Query getContactRequestJsonList(String userId,boolean getIncomingRequests)
-    {
-    return getDatabaseReference("contactRequest");
-    }
-
-    public Query getContactRequestJsonList(String userId)
-    {
-     return getContactRequestJsonList(userId,false);
-    }
-*/
 
     public void addChatToDb(String userId,Chat chat)
     {
@@ -125,13 +102,18 @@ public class DatabaseHandler
 
     public void updateUserToken(String userId,String refreshedToken)
     {
-        getDatabaseReference(userId).child("fcmToken").setValue(refreshedToken,completeListener);
+        getDatabaseReference("user/" + userId).child("fcmToken").setValue(refreshedToken,completeListener);
 
     }
 
-    public void addContactRequest(String uniqueID, ContactRequest contactRequest)
+    public void addContactRequest(ContactRequest contactRequest)
     {
-        getDatabaseReference("contactRequest").push().setValue(contactRequest,completeListener);
+        String newKey = getDatabaseReference("contactRequest").push().getKey();
+        getDatabaseReference("contactRequest/" + newKey).setValue(contactRequest,completeListener);
+
+
+        getDatabaseReference(contactRequest.getSentFrom()).child("sentRequests/").setValue(newKey,completeListener);
+        getDatabaseReference(contactRequest.getSentTo()).child("receivedRequests/").setValue(newKey,completeListener);
     }
 
     // TODO: 10/24/2017 Test and complete logic
